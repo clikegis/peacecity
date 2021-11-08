@@ -36,6 +36,9 @@ export default {
         console.log(err);
       })
     },
+    testMethod(){
+      console.log(123);
+    }
   },
   data(){
     return{
