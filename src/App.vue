@@ -1,17 +1,27 @@
 <template>
   <div id="app">
-    <div id="NoiseMapContainer">
-       <NoiseMap></NoiseMap>
+    <!--选择位置-->
+    <div id="choosePage" v-if="hasChoose">
+      <StartPage></StartPage>
+    </div>
+    <!--地图页面位置-->
+    <div id="NoiseMapContainer" v-else>
+
     </div>
   </div>
 </template>
 
 <script>
-import NoiseMap from "@/components/NoiseMap";
+import StartPage from "./components/StartPage";
 export default {
   name: 'App',
   components: {
-    NoiseMap
+    StartPage
+  },
+  data(){
+    return{
+      hasChoose:true,/*是否选择二维还是三维*/
+    }
   }
 }
 </script>
@@ -23,8 +33,11 @@ export default {
   position: relative;
 }
 /*地图容器*/
-#NoiseMapContainer{
+#choosePage,#NoiseMapContainer{
   height: 100%;
   width: 100%;
+}
+#choosePage{
+
 }
 </style>
