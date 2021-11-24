@@ -1,0 +1,191 @@
+<template>
+  <div class="TimeLine">
+    <!--播放按钮-->
+    <div class="playButtonContainer">
+      <button class="playBtn iconfont" :class="playBtnIcon" @click="startPlay"></button>
+    </div>
+
+    <!--时间界面-->
+    <div class="chooseTimeContainer">
+      <div class="DaySpan timeDisplay" title="点击选择日期">
+        <div>{{selectYear}}</div>
+        <div>{{selectMonthAndDay}}</div>
+      </div>
+      <div class="HMSSpan timeDisplay" title="点击选择时间">{{selectHM}}</div>
+    </div>
+
+    <!--时间轴主体-->
+    <div class="timeLineContainer">
+      <!--中间穿插线线-->
+      <div class="oneLine"></div>
+      <!--24小时时间点-->
+      <div class="hoursContainer">
+
+      </div>
+    </div>
+
+    <!--上一天、下一天按钮-->
+    <div class="changeDayContainer" title="点击切换日期">
+    <!--前一天按钮-->
+      <button class="iconfont changeDayBtn lastday icon-xiangzuo"></button>
+    <!--后一天按钮-->
+      <button class="iconfont changeDayBtn nextBtn icon-xiangyou"></button>
+    </div>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Timeline",
+  data(){
+    return{
+        playBtnIcon:"icon-24gf-play",
+        currentDay:'',
+        currentHM:'',
+        selectDay:'2012-4-12',
+        selectHM:'03 AM',
+        hoursArr:(function (){
+          let arr = [];
+          for(let i = 0;i < 24;i++){
+            arr.push(i);
+          }
+          return arr;
+        })(),
+    }
+  },
+  computed:{
+    selectYear(){
+      return this.selectDay.split("-")[0];
+    },
+    selectMonthAndDay(){
+      let [year,month,day] = this.selectDay.split("-");
+      return month+"-"+day;
+    }
+  },
+  methods:{
+    startPlay(){
+     this.playBtnIcon = this.playBtnIcon=="icon-24gf-play"?"icon-zanting":"icon-24gf-play";
+    }
+  }
+}
+</script>
+
+<style scoped>
+.TimeLine{
+  width: 90vw;
+  height: 8vh;
+  display: flex;
+}
+
+/*设置模块位置*/
+.playButtonContainer{
+  height: 10vh;
+  width: 5vw;
+}
+.chooseTimeContainer{
+  height: 10vh;
+  width: 5vw;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+  border-right: none;
+}
+.timeLineContainer{
+  height: 10vh;
+  width: 75vw;
+  position: relative;
+  border: solid 2px white;
+  border-right: none;
+  border-left: none;
+}
+.changeDayContainer{
+  height: 10vh;
+  width: 5vw;
+  position: relative;
+}
+
+/*设置播放按钮样式*/
+.playBtn{
+  display: block;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 5rem;
+  line-height: 5rem;
+  color: #696969;
+  background-color: transparent;
+  transition: all .3s;
+}
+.playBtn:hover{
+  background-color: #363636;
+  color: #00F5FF;
+  cursor: pointer;
+}
+
+/*设置前一天/后一天按钮样式*/
+.changeDayBtn{
+  width: 50%;
+  height: 100%;
+  border-radius: 0;
+  color: #696969;
+  background-color: transparent;
+  transition: all .3s;
+  font-weight: bolder;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.changeDayBtn:hover{
+  background-color: #363636;
+  color: #00F5FF;
+  cursor: pointer;
+}
+
+/*设置时间显示*/
+.timeDisplay{
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-weight: bolder;
+  font-size: 2.66vh;
+  line-height: 2.66vh;
+  cursor: pointer;
+  transition: all .5s;
+}
+.timeDisplay:hover{
+  background-color: #3a6692;
+}
+.DaySpan{
+  height: 66%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.HMSSpan{
+  border-top: solid 1px white;
+  height: 33%;
+}
+
+/*时间轴样式*/
+.oneLine{
+  width: 100%;
+  position: absolute;
+  margin: auto 0;
+  top: 0;
+  bottom: 0;
+  height: 0.2vh;
+  background-color: #00F5FF;
+}
+
+.hoursContainer{
+  position: absolute;
+  width: 100%;
+  margin: auto 0;
+  top: 0;
+  bottom: 0;
+  height: 4vh;
+  background-color: #9a6e3a;
+}
+</style>
