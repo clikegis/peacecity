@@ -4,6 +4,9 @@ import App from './App.vue'
 /*引入路由*/
 import router from './router'
 
+/*引入Vuex仓库*/
+import store from './store'
+
 /*引入ui库*/
 import ant from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
@@ -17,5 +20,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

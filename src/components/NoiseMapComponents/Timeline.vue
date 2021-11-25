@@ -20,7 +20,17 @@
       <div class="oneLine"></div>
       <!--24小时时间点-->
       <div class="hoursContainer">
+          <div class="singeHourContainer" v-for="(hour,index) in hoursArr" :key="index">
+            <div class="singeHour" :title="hour.toString()+':00'">
 
+            </div>
+          </div>
+      </div>
+      <!--下方时间-->
+      <div  class="hoursDescriptionsContainer">
+        <div class="singleHourDescription" v-for="(hour,index) in hoursArr" :key="index" v-if="index%12==0">
+          {{hour+":00"}}
+        </div>
       </div>
     </div>
 
@@ -36,37 +46,28 @@
 </template>
 
 <script>
+import {mapActions,mapGetters,mapState} from 'vuex'
 export default {
   name: "Timeline",
   data(){
     return{
         playBtnIcon:"icon-24gf-play",
-        currentDay:'',
-        currentHM:'',
-        selectDay:'2012-4-12',
-        selectHM:'03 AM',
-        hoursArr:(function (){
-          let arr = [];
-          for(let i = 0;i < 24;i++){
-            arr.push(i);
-          }
-          return arr;
-        })(),
     }
   },
   computed:{
-    selectYear(){
-      return this.selectDay.split("-")[0];
-    },
-    selectMonthAndDay(){
-      let [year,month,day] = this.selectDay.split("-");
-      return month+"-"+day;
-    }
+    ...mapState(['currentDay','currentHM','selectDay','selectHM','hoursArr']),
+    ...mapGetters(['selectYear','selectMonthAndDay']),
   },
   methods:{
     startPlay(){
      this.playBtnIcon = this.playBtnIcon=="icon-24gf-play"?"icon-zanting":"icon-24gf-play";
     }
+  },
+  mounted(){
+      jquery('.singeHour').click(function (){
+        jquery('.singeHour').removeClass('clickHour');
+        $(this).toggleClass('clickHour');
+      });
   }
 }
 </script>
@@ -175,8 +176,8 @@ export default {
   margin: auto 0;
   top: 0;
   bottom: 0;
-  height: 0.2vh;
-  background-color: #00F5FF;
+  height: 0.4vh;
+  background-color: #8B7355;
 }
 
 .hoursContainer{
@@ -186,6 +187,79 @@ export default {
   top: 0;
   bottom: 0;
   height: 4vh;
-  background-color: #9a6e3a;
+  /*background-color: #9a6e3a;*/
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+}
+
+.singeHourContainer{
+  height: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.singeHour{
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  transition: .5s all;
+  background: linear-gradient(45deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 300%; /*背景大小设置为原来的300% 这样背景看着不会太刻板 */
+}
+
+.singeHour::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  border-radius: 25px;
+  background: linear-gradient(to right, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 300%;
+  z-index: -1;
+}
+.singeHour:hover{
+  animation: hoverBtn 2s infinite;
+  transform: scale(1.5);
+  cursor: pointer;
+}
+
+@keyframes hoverBtn {
+  100% {
+    background-position: 300%;
+  }
+}
+
+.clickHour{
+  transform: scale(1.5);
+}
+
+.singeHour:hover::before {
+  filter: blur(10px);
+  animation: hoverBtn 2s infinite;
+}
+
+.hoursDescriptionsContainer{
+  position: absolute;
+  width: 100%;
+  bottom: 3%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.singleHourDescription{
+  width: 3.5rem;
+  height: 1.5rem;
+  font-weight: bolder;
+  color: #00F5FF;
+  text-align: center;
+  font-size: 1rem;
 }
 </style>
