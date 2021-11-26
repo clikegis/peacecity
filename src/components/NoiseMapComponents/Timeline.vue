@@ -17,7 +17,12 @@
     <!--时间轴主体-->
     <div class="timeLineContainer">
       <!--中间穿插线线-->
-      <div class="oneLine"></div>
+      <div class="oneLine">
+        <!--中间荧光轴-->
+        <div class="lightLine">
+
+        </div>
+      </div>
       <!--24小时时间点-->
       <div class="hoursContainer">
           <div class="singeHourContainer" v-for="(hour,index) in hoursArr" :key="index">
@@ -67,6 +72,10 @@ export default {
       jquery('.singeHour').click(function (){
         jquery('.singeHour').removeClass('clickHour');
         $(this).toggleClass('clickHour');
+        console.log($(this).position());
+        $('.lightLine').animate({
+            width:$(this).position().left
+        },300);
       });
   }
 }
@@ -89,7 +98,7 @@ export default {
   width: 5vw;
   display: flex;
   flex-direction: column;
-  border: 1px solid white;
+  border: 2px solid white;
   border-right: none;
 }
 .timeLineContainer{
@@ -99,7 +108,17 @@ export default {
   border: solid 2px white;
   border-right: none;
   border-left: none;
+  transition: all .3s;
+  box-sizing: border-box;
+  border-left: 2px white solid;
+  border-right: 2px white solid;
 }
+
+.timeLineContainer:hover{
+  background-color: #333333;
+  /*opacity: 50%;*/
+}
+
 .changeDayContainer{
   height: 10vh;
   width: 5vw;
@@ -179,7 +198,11 @@ export default {
   height: 0.4vh;
   background-color: #8B7355;
 }
-
+.lightLine{
+    width: 0;
+    height: 100%;
+    background-image: linear-gradient(to right , #7A88FF, #7AFFAF);
+}
 .hoursContainer{
   position: absolute;
   width: 100%;
@@ -187,11 +210,9 @@ export default {
   top: 0;
   bottom: 0;
   height: 4vh;
-  /*background-color: #9a6e3a;*/
   display: flex;
   justify-content: space-around;
   align-items: center;
-
 }
 
 .singeHourContainer{
@@ -236,7 +257,7 @@ export default {
 }
 
 .clickHour{
-  transform: scale(1.5);
+  transform: scale(1.8);
 }
 
 .singeHour:hover::before {
@@ -258,7 +279,7 @@ export default {
   width: 3.5rem;
   height: 1.5rem;
   font-weight: bolder;
-  color: #00F5FF;
+  color: whitesmoke;
   text-align: center;
   font-size: 1rem;
 }
