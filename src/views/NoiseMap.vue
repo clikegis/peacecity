@@ -15,6 +15,11 @@
     </div>
       <!--地图视图-->
       <div id="MapView">
+       <!--图表容器-->
+        <div class="ChartContainer">
+          <NoiseChart></NoiseChart>
+        </div>
+
         <!--时间轴-->
         <div class="TimeLineContainer">
           <Timeline></Timeline>
@@ -27,10 +32,12 @@
 import {loadModules} from 'esri-loader'
 import jquery from "jquery"
 import Timeline from "../components/NoiseMapComponents/Timeline";
+import NoiseChart from "../components/NoiseMapComponents/NoiseChart";
 export default {
   name: "NoiseMap",
   components:{
-    Timeline
+    Timeline,
+    NoiseChart
   },
   mounted() {
     this.createdMapView();
@@ -41,7 +48,17 @@ export default {
         url: 'https://js.arcgis.com/4.21/',
         css: "https://js.arcgis.com/4.21/esri/themes/dark/main.css"
       };
-      loadModules(["esri/Map","esri/views/MapView","esri/layers/WMSLayer"],option).then(([Map,MapView,WMSLayer])=>{
+      loadModules(["esri/Map","esri/views/MapView","esri/layers/FeatureLayer",'esri/geometry/Extent'],option).then(([Map,MapView,FeatureLayer])=>{
+        // const layer = new WMSLayer({
+        //   url: "http://1.117.159.12:8090/geoserver/bigCreation/wms"
+        // });
+        // layer.load().then(() => {
+        //   const names = layer.allSublayers
+        //       .filter((sublayer) => !sublayer.sublayers) // Non-grouping layers will not have any "sublayers".
+        //       .map((sublayer) => sublayer.name);
+        //   console.log("Names of all child sublayers", names.join());
+        // });
+
         let map = new Map({
           basemap:{
             portalItem: {
@@ -49,6 +66,12 @@ export default {
             }
           }
         });
+
+        const fl = new FeatureLayer({
+          url: "https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/NYCProjection/FeatureServer"
+        });
+
+        map.add(fl);
 
         let view = new MapView({
           map:map,
@@ -61,6 +84,22 @@ export default {
           jquery('.loadAnimationContainer').fadeOut(1000);
         });
 
+        //加载图层
+        // let resourceInfo = {
+        //   extent: new Extent(-74.61238,41.17281, -73.51857,40.34888, {
+        //     wkid: 4326
+        //   }),
+        //   layerInfos: [],
+        //   version: '1.1.0'
+        // };
+        // let geoWmsUrl = "http://1.117.159.12:8090/geoserver/bigCreation/wms";
+        // let geoWmsLayer = new WMSLayer(geoWmsUrl,{resourceInfo: resourceInfo});
+        // geoWmsLayer.setImageFormat("png");
+        // console.log(geoWmsLayer.setImageFormat);
+        // geoWmsLayer.setVisibleLayers(["bigCreation","NYCProjection"]);
+        // map.addLayer([geoWmsLayer]);
+        // this.map=map
+//注：setVisibleLayers中的参数对应网址中的“LAYERS=”后面的值
       }).catch((err)=>{
         console.log(err);
       })
@@ -160,6 +199,13 @@ export default {
   to{
     transform: translateY(-2vh);
   }
+}
+
+/*图表位置-左上角*/
+.ChartContainer{
+  position: absolute;
+  top:2vh;
+  left: 5vw;
 }
 
 /*时间轴位置*/

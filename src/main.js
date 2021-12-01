@@ -1,5 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
+/*引入echarts*/
+import * as echarts from 'echarts';
+
+/*引入store*/
+import store from './store'
 
 /*引入路由*/
 import router from './router'
@@ -15,6 +20,8 @@ import 'ant-design-vue/dist/antd.css'
 import '../src/assets/icon/iconfont.css'
 
 Vue.use(ant)
+
+Vue.prototype.$echarts=echarts
 
 Vue.config.productionTip = false
 
