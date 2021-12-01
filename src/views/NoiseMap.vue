@@ -62,6 +62,8 @@ export default {
           url: this.featureLayerUrl
         });
 
+        map.add(fl);
+
         let view = new MapView({
           map:map,
           center:[-74.0,40.70],
@@ -73,48 +75,20 @@ export default {
           jquery('.loadAnimationContainer').fadeOut(1000);
         });
 
-
-        //初始化查询语句
-        let query = this.createGraphicLayer();
-        //查询结果数组
-        let featureArr = [];
-        //进行查询
-        fl.queryFeatures(query).then((result)=>{
-          featureArr = result.features;
-
-          //定义要素图层
-          this.queryFl = new FeatureLayer({
-            source:featureArr,
-            objectIdField: "ObjectID"
-          });
-
-          //添加进地图
-          map.add(this.queryFl);
+        //获取图层要素并初始化
+        fl.queryFeatures().then((result)=>{
+          this.featureArr = result.features;
         });
       }).catch((err)=>{
         console.log(err);
       })
     },
-    testMethod(){
-      console.log(123);
-    },
-    createGraphicLayer(){
-      //1、定义查询语句
-      const queryDescription = "FID > -1"; //肯定成立
-      //2、创建查询对象
-      const queryOej = {
-        where:queryDescription,
-        returnGeometry: true,
-        outFields: ["*"],
-      };
-      return queryOej;
-    }
   },
   data(){
     return{
       featureLayerUrl:"https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/NYCProjection/FeatureServer",
       loadDescription:'地图正在赶来途中~',
-      queryFl:null,
+      featureArr:[],
     }
   }
 }
