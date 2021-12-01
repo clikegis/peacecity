@@ -80,7 +80,6 @@ export default {
 
         }
       })
-      console.log(seriesArr)
       //图例
       const legendArr=this.TestData.map(item=>{
         return item.name

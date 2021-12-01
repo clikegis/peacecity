@@ -48,17 +48,7 @@ export default {
         url: 'https://js.arcgis.com/4.21/',
         css: "https://js.arcgis.com/4.21/esri/themes/dark/main.css"
       };
-      loadModules(["esri/Map","esri/views/MapView","esri/layers/FeatureLayer",'esri/geometry/Extent'],option).then(([Map,MapView,FeatureLayer])=>{
-        // const layer = new WMSLayer({
-        //   url: "http://1.117.159.12:8090/geoserver/bigCreation/wms"
-        // });
-        // layer.load().then(() => {
-        //   const names = layer.allSublayers
-        //       .filter((sublayer) => !sublayer.sublayers) // Non-grouping layers will not have any "sublayers".
-        //       .map((sublayer) => sublayer.name);
-        //   console.log("Names of all child sublayers", names.join());
-        // });
-
+      loadModules(["esri/Map","esri/views/MapView","esri/layers/FeatureLayer",'esri/geometry/Extent',"esri/layers/GraphicsLayer"],option).then(([Map,MapView,FeatureLayer,GraphicsLayer])=>{
         let map = new Map({
           basemap:{
             portalItem: {
@@ -67,6 +57,7 @@ export default {
           }
         });
 
+        /*纽约面图层*/
         const fl = new FeatureLayer({
           url: "https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/NYCProjection/FeatureServer"
         });
@@ -82,6 +73,21 @@ export default {
           // this.isLoading = false;
           this.loadDescription = '加载成功！';
           jquery('.loadAnimationContainer').fadeOut(1000);
+        });
+
+
+        //初始化查询语句
+        let query = this.createGraphicLayer();
+        let featureArr = [];
+
+        //进行查询
+        fl.queryFeatures(query).then((result)=>{
+          featureArr = result.features;
+        });
+
+        //定义要素图层
+        this.queryFl = new FeatureLayer({
+
         });
 
         //加载图层
@@ -106,11 +112,23 @@ export default {
     },
     testMethod(){
       console.log(123);
+    },
+    createGraphicLayer(){
+      //1、定义查询语句
+      const queryDescription = "FID > -1"; //肯定成立
+      //2、创建查询对象
+      const queryOej = {
+        where:queryDescription,
+        returnGeometry: true,
+        outFields: ["*"],
+      };
+      return queryOej;
     }
   },
   data(){
     return{
-      loadDescription:'地图正在赶来途中~'
+      loadDescription:'地图正在赶来途中~',
+      queryFl:null,
     }
   }
 }

@@ -3,9 +3,6 @@ import App from './App.vue'
 /*引入echarts*/
 import * as echarts from 'echarts';
 
-/*引入store*/
-import store from './store'
-
 /*引入路由*/
 import router from './router'
 
