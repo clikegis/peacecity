@@ -56,10 +56,22 @@ const state={
 }
 
 
+const getters = {
+    selectYear(state){
+       let [year,month,day] = state.selectDay.split('-');
+       return year;
+    },
+    selectMonthAndDay(state){
+        let [year,month,day] = state.selectDay.split('-');
+        return month+' - '+day;
+    }
+}
+
 //创建store
 export default new Vuex.Store({
     actions,
     mutations,
     state,
+    getters
 })
 

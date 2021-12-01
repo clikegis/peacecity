@@ -59,15 +59,13 @@ export default {
 
         /*纽约面图层*/
         const fl = new FeatureLayer({
-          url: "https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/NYCProjection/FeatureServer"
+          url: this.featureLayerUrl
         });
-
-        map.add(fl);
 
         let view = new MapView({
           map:map,
-          center:[-74.0,40.66],
-          zoom:12,
+          center:[-74.0,40.70],
+          zoom:10,
           container:'MapView'
         }).on("layerview-create", ()=> {//视图加载完毕
           // this.isLoading = false;
@@ -78,34 +76,21 @@ export default {
 
         //初始化查询语句
         let query = this.createGraphicLayer();
+        //查询结果数组
         let featureArr = [];
-
         //进行查询
         fl.queryFeatures(query).then((result)=>{
           featureArr = result.features;
+
+          //定义要素图层
+          this.queryFl = new FeatureLayer({
+            source:featureArr,
+            objectIdField: "ObjectID"
+          });
+
+          //添加进地图
+          map.add(this.queryFl);
         });
-
-        //定义要素图层
-        this.queryFl = new FeatureLayer({
-
-        });
-
-        //加载图层
-        // let resourceInfo = {
-        //   extent: new Extent(-74.61238,41.17281, -73.51857,40.34888, {
-        //     wkid: 4326
-        //   }),
-        //   layerInfos: [],
-        //   version: '1.1.0'
-        // };
-        // let geoWmsUrl = "http://1.117.159.12:8090/geoserver/bigCreation/wms";
-        // let geoWmsLayer = new WMSLayer(geoWmsUrl,{resourceInfo: resourceInfo});
-        // geoWmsLayer.setImageFormat("png");
-        // console.log(geoWmsLayer.setImageFormat);
-        // geoWmsLayer.setVisibleLayers(["bigCreation","NYCProjection"]);
-        // map.addLayer([geoWmsLayer]);
-        // this.map=map
-//注：setVisibleLayers中的参数对应网址中的“LAYERS=”后面的值
       }).catch((err)=>{
         console.log(err);
       })
@@ -127,6 +112,7 @@ export default {
   },
   data(){
     return{
+      featureLayerUrl:"https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/NYCProjection/FeatureServer",
       loadDescription:'地图正在赶来途中~',
       queryFl:null,
     }
