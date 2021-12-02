@@ -33,7 +33,7 @@
       </div>
       <!--下方时间-->
       <div  class="hoursDescriptionsContainer">
-        <div class="singleHourDescription" v-for="(hour,index) in hoursArr" :key="index" v-if="index%12==0">
+        <div class="singleHourDescription" v-for="(hour,index) in hoursArr" :key="index" v-show="index%12==0">
           {{hour+":00"}}
         </div>
       </div>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import jquery from 'jquery'
 import {mapActions,mapGetters,mapState} from 'vuex'
 export default {
   name: "Timeline",
@@ -71,10 +72,9 @@ export default {
   mounted(){
       jquery('.singeHour').click(function (){
         jquery('.singeHour').removeClass('clickHour');
-        $(this).toggleClass('clickHour');
-        console.log($(this).position());
-        $('.lightLine').animate({
-            width:$(this).position().left
+        jquery(this).toggleClass('clickHour');
+        jquery('.lightLine').animate({
+            width:jquery(this).position().left
         },300);
       });
   }

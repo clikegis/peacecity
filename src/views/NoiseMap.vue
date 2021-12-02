@@ -24,6 +24,12 @@
         <div class="TimeLineContainer">
           <Timeline></Timeline>
         </div>
+
+        <!--标签容器 -->
+        <div class="labelSelectContainer">
+          <LabelSelect></LabelSelect>
+        </div>
+
       </div>
   </div>
 </template>
@@ -33,11 +39,13 @@ import {loadModules} from 'esri-loader'
 import jquery from "jquery"
 import Timeline from "../components/NoiseMapComponents/Timeline";
 import NoiseChart from "../components/NoiseMapComponents/NoiseChart";
+import LabelSelect from "../components/NoiseMapComponents/LabelSelect"
 export default {
   name: "NoiseMap",
   components:{
     Timeline,
-    NoiseChart
+    NoiseChart,
+    LabelSelect
   },
   mounted() {
     this.createdMapView();
@@ -86,7 +94,7 @@ export default {
   },
   data(){
     return{
-      featureLayerUrl:"https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/NYCProjection/FeatureServer",
+      featureLayerUrl:"https://services3.arcgis.com/XDzy9VWpT2sZyZqz/arcgis/rest/services/NYCShape/FeatureServer",
       loadDescription:'地图正在赶来途中~',
       featureArr:[],
     }
@@ -179,11 +187,11 @@ export default {
   }
 }
 
-/*图表位置-左上角*/
+/*图表位置*/
 .ChartContainer{
   position: absolute;
   top:2vh;
-  left: 5vw;
+  right: 1vw;
 }
 
 /*时间轴位置*/
@@ -192,5 +200,11 @@ export default {
   bottom:2vh;
   left: 5vw;
   right: 0;
+}
+/*标签容器位置*/
+.labelSelectContainer{
+  position: absolute;
+  top:2vh;
+  left: 1vw;
 }
 </style>
